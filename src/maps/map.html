@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Map Banjir Semarang</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin="" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        #map {
+            height: 100vh;
+            width: 100vw;
+        }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 250px;
+        }
+        .coordinates {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+        .status {
+            font-size: 10px;
+            color: #999;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<div class="info-panel">
+    <strong>Peta Banjir Semarang</strong>
+    <div class="coordinates" id="coordinates">No location selected</div>
+    <div class="status" id="status">Initializing...</div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
+
+<script>
+    console.log('Initializing Semarang Flood Map...');
+
+    // Initialize the map centered on Semarang
+    var map = L.map('map').setView([-6.9667, 110.4167], 12);
+
+    // Add OpenStreetMap tiles
+    var osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom: 19
+    });
+
+    osmLayer.addTo(map);
+
+    // Variables to store current state
+    var currentMarker = null;
+    var selectedLocation = null;
+    var bridgeReady = false;
+    var reportMarkers = [];
+
+    // Function to update status
+    function updateStatus(message) {
+        var statusElement = document.getElementById('status');
+        if (statusElement) {
+            statusElement.textContent = message;
+        }
+        console.log('Status:', message);
+    }
+
+    // Function to check if Java bridge is available
+    function checkJavaBridge() {
+        var available = window.javaConnector &&
+            typeof window.javaConnector.setSelectedLocation === 'function';
+
+        console.log('Java bridge check - Available:', available);
+
+        if (available && !bridgeReady) {
+            bridgeReady = true;
+            updateStatus('Java bridge ready');
+            console.log('Bridge is now ready!');
+
+            // Notify Java that bridge is ready
+            try {
+                if (typeof window.javaConnector.bridgeReady === 'function') {
+                    window.javaConnector.bridgeReady();
+                }
+            } catch (e) {
+                console.log('Bridge ready notification failed:', e);
+            }
+        }
+
+        return available;
+    }
+
+    // Function to safely call Java bridge
+    function callJavaBridge(lat, lng) {
+        console.log('=== CALLING JAVA BRIDGE ===');
+        console.log('Lat:', lat, 'Lng:', lng);
+        console.log('Bridge ready:', bridgeReady);
+
+        if (!checkJavaBridge()) {
+            console.log('Java bridge not available, storing location locally');
+            updateStatus('Java bridge not ready');
+            return false;
+        }
+
+        try {
+            console.log('Calling javaConnector.setSelectedLocation...');
+            window.javaConnector.setSelectedLocation(lat, lng);
+            console.log('Java connector called successfully!');
+            updateStatus('Location sent to Java');
+
+            // Log confirmation
+            if (typeof window.javaConnector.logMessage === 'function') {
+                window.javaConnector.logMessage('Location selected: ' + lat.toFixed(6) + ', ' + lng.toFixed(6));
+            }
+
+            return true;
+        } catch (error) {
+            console.error('Error calling Java connector:', error);
+            updateStatus('Error calling Java bridge: ' + error.message);
+            return false;
+        }
+    }
+
+    // Function to add/update selection marker
+    function addSelectionMarker(lat, lng, title) {
+        console.log('Adding selection marker at:', lat, lng);
+
+        // Remove existing marker
+        if (currentMarker) {
+            map.removeLayer(currentMarker);
+        }
+
+        // Add new marker with custom icon
+        currentMarker = L.marker([lat, lng], {
+            icon: L.icon({
+                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                shadowSize: [41, 41]
+            })
+        }).addTo(map);
+
+        if (title) {
+            currentMarker.bindPopup(title).openPopup();
+        }
+
+        // Update coordinates display
+        document.getElementById('coordinates').textContent =
+            `Lat: ${lat.toFixed(6)}, Lng: ${lng.toFixed(6)}`;
+    }
+
+    // Handle map clicks for location selection
+    map.on('click', function(e) {
+        var lat = e.latlng.lat;
+        var lng = e.latlng.lng;
+
+        console.log('=== MAP CLICKED ===');
+        console.log('Clicked location:', lat, lng);
+
+        // Store selected location
+        selectedLocation = {lat: lat, lng: lng};
+        console.log('Location stored:', selectedLocation);
+
+        // Update marker
+        addSelectionMarker(lat, lng, `Lokasi Terpilih<br>Lat: ${lat.toFixed(6)}<br>Lng: ${lng.toFixed(6)}`);
+
+        // Call Java bridge immediately
+        var success = callJavaBridge(lat, lng);
+        if (success) {
+            updateStatus('Location selected successfully');
+        } else {
+            updateStatus('Location selected (bridge not ready)');
+        }
+    });
+
+    // Add sample flood-prone areas
+    var floodAreas = [
+        {lat: -6.9584, lng: 110.4278, name: "Kawasan Kota Lama Semarang"},
+        {lat: -6.9775, lng: 110.4108, name: "Area Stasiun Tugu"},
+        {lat: -6.9934, lng: 110.4203, name: "Area Pasar Johar"}
+    ];
+
+    // Add flood area markers
+    floodAreas.forEach(function(area) {
+        L.circle([area.lat, area.lng], {
+            color: 'red',
+            fillColor: '#f03',
+            fillOpacity: 0.2,
+            radius: 500
+        }).addTo(map).bindPopup(`<b>Daerah Rawan Banjir:</b><br>${area.name}`);
+    });
+
+    // Add legend
+    var legend = L.control({position: 'bottomleft'});
+    legend.onAdd = function (map) {
+        var div = L.DomUtil.create('div', 'legend');
+        div.style.backgroundColor = 'white';
+        div.style.padding = '10px';
+        div.style.borderRadius = '5px';
+        div.style.boxShadow = '0 2px 5px rgba(0,0,0,0.2)';
+        div.innerHTML = '' +
+            '<i style="background: #f03; opacity: 0.2; width: 18px; height: 18px; float: left; margin-right: 8px; border-radius: 50%;"></i>' +
+            'Daerah rawan banjir<br>' +
+            '<i style="background: red; width: 18px; height: 18px; float: left; margin-right: 8px; margin-top: 5px;"></i>' +
+            'Lokasi terpilih';
+        return div;
+    };
+    legend.addTo(map);
+
+    // Expose functions globally for external use
+    window.mapFunctions = {
+        // Clear all report markers
+        clearMarkers: function() {
+            console.log('Clearing all report markers...');
+            reportMarkers.forEach(function(marker) {
+                map.removeLayer(marker);
+            });
+            reportMarkers = [];
+        },
+
+        // Add marker for reports
+        addMarker: function(lat, lng, popupContent) {
+            console.log('Adding report marker at:', lat, lng);
+            var marker = L.marker([lat, lng]).addTo(map);
+            if (popupContent) {
+                marker.bindPopup(popupContent);
+            }
+            reportMarkers.push(marker);
+            return marker;
+        },
+
+        // Get selected location
+        getSelectedLocation: function() {
+            console.log('getSelectedLocation called, returning:', selectedLocation);
+            return selectedLocation;
+        },
+
+        // Set map view
+        setView: function(lat, lng, zoom) {
+            map.setView([lat, lng], zoom || 15);
+        },
+
+        // Check bridge status
+        checkBridge: function() {
+            console.log('checkBridge called from external');
+            return checkJavaBridge();
+        },
+
+        // Send current location to Java (if available)
+        sendLocationToJava: function() {
+            console.log('sendLocationToJava called');
+            if (selectedLocation && bridgeReady) {
+                console.log('Sending stored location to Java:', selectedLocation);
+                return callJavaBridge(selectedLocation.lat, selectedLocation.lng);
+            } else if (selectedLocation && !bridgeReady) {
+                console.log('Have location but bridge not ready:', selectedLocation);
+                // Try to establish bridge again
+                if (checkJavaBridge()) {
+                    return callJavaBridge(selectedLocation.lat, selectedLocation.lng);
+                }
+                return false;
+            } else {
+                console.log('No location to send to Java');
+                return false;
+            }
+        },
+
+        // Force location update
+        forceLocationUpdate: function() {
+            if (selectedLocation) {
+                console.log('Force updating location:', selectedLocation);
+                callJavaBridge(selectedLocation.lat, selectedLocation.lng);
+                return true;
+            }
+            return false;
+        }
+    };
+
+    // Periodically check for Java bridge availability
+    var bridgeCheckCount = 0;
+    var bridgeCheckInterval = setInterval(function() {
+        bridgeCheckCount++;
+        console.log('Bridge check attempt #' + bridgeCheckCount);
+
+        if (!bridgeReady) {
+            checkJavaBridge();
+
+            // If bridge becomes available and we have a stored location, send it
+            if (bridgeReady && selectedLocation) {
+                console.log('Bridge now available, sending stored location:', selectedLocation);
+                callJavaBridge(selectedLocation.lat, selectedLocation.lng);
+            }
+        }
+
+        if (bridgeReady || bridgeCheckCount >= 30) {
+            clearInterval(bridgeCheckInterval);
+            if (!bridgeReady) {
+                updateStatus('Running standalone mode');
+                console.log('Bridge check timed out, running in standalone mode');
+            }
+        }
+    }, 500);
+
+    // Map ready event
+    map.whenReady(function() {
+        console.log('Map is ready');
+        updateStatus('Map ready - Click to select location');
+    });
+
+    // Test function accessible from console
+    window.testBridge = function() {
+        console.log('=== BRIDGE TEST FROM CONSOLE ===');
+        console.log('Bridge ready:', bridgeReady);
+        console.log('Selected location:', selectedLocation);
+        console.log('Java connector available:', !!window.javaConnector);
+
+        if (selectedLocation) {
+            return callJavaBridge(selectedLocation.lat, selectedLocation.lng);
+        } else {
+            console.log('No location selected for testing');
+            return false;
+        }
+    };
+
+    console.log('Map initialization complete');
+</script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import java.net.URL?>
+<AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AdminDashboardController">
+    <stylesheets>
+        <URL value="@../css/styles.css" />
+    </stylesheets>
+    <children>
+        <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <MenuBar>
+                <Menu text="Menu">
+                    <MenuItem text="Keluar" onAction="#handleLogout" />
+                </Menu>
+            </MenuBar>
+            <HBox style="-fx-background-color: #4a6baf;">
+                <children>
+                    <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@../images/flood-icon-white.png" />
+                        </image>
+                    </ImageView>
+                    <Label text="Admin - Pelaporan Banjir Semarang" textFill="WHITE">
+                        <font>
+                            <Font name="System Bold" size="18.0" />
+                        </font>
+                        <padding>
+                            <Insets left="10.0" />
+                        </padding>
+                    </Label>
+                </children>
+                <padding>
+                    <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                </padding>
+            </HBox>
+            <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+                <tabs>
+                    <Tab text="Daftar Laporan">
+                        <content>
+                            <VBox spacing="10.0" style="-fx-background-color: #f5f5f5;">
+                                <padding>
+                                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                </padding>
+                                <children>
+                                    <Label text="Daftar Laporan Banjir" styleClass="header-label" />
+                                    <Separator />
+                                    <Label text="Gunakan tombol 'Ubah Status' dan 'Kirim Pesan' pada setiap laporan" style="-fx-text-fill: #666; -fx-font-style: italic;" />
+                                    <ListView fx:id="reportsListView" styleClass="report-list" VBox.vgrow="ALWAYS" />
+                                </children>
+                            </VBox>
+                        </content>
+                    </Tab>
+                </tabs>
+            </TabPane>
+        </VBox>
+    </children>
+</AnchorPane>

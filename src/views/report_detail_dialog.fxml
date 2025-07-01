@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.web.WebView?>
+
+<HBox spacing="15.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ReportDetailDialogController">
+    <padding>
+        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+    </padding>
+    <children>
+        <!-- Kolom Kiri: Detail Laporan -->
+        <VBox HBox.hgrow="NEVER" minWidth="350.0" spacing="10.0">
+            <Label fx:id="locationLabel" styleClass="header-label" wrapText="true" />
+            <Separator />
+            <GridPane hgap="10.0" vgap="8.0">
+                <columnConstraints>
+                    <ColumnConstraints hgrow="NEVER" minWidth="100.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" />
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints /> <RowConstraints /> <RowConstraints /> <RowConstraints />
+                    <RowConstraints /> <RowConstraints /> <RowConstraints /> <RowConstraints />
+                </rowConstraints>
+                <Label text="ID Laporan:" style="-fx-font-weight: bold;" GridPane.rowIndex="0" />
+                <Label fx:id="reportIdLabel" text="-" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                <Label text="Status:" style="-fx-font-weight: bold;" GridPane.rowIndex="1" />
+                <Label fx:id="statusLabel" text="-" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                <Label text="Tanggal:" style="-fx-font-weight: bold;" GridPane.rowIndex="2" />
+                <Label fx:id="dateLabel" text="-" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                <Label text="Pelapor:" style="-fx-font-weight: bold;" GridPane.rowIndex="3" />
+                <Label fx:id="reporterNameLabel" text="-" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+                <Label text="Telepon:" style="-fx-font-weight: bold;" GridPane.rowIndex="4" />
+                <Label fx:id="reporterPhoneLabel" text="-" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
+                <Label text="Koordinat:" style="-fx-font-weight: bold;" GridPane.rowIndex="5" />
+                <Label fx:id="coordinatesLabel" text="-" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            </GridPane>
+            <Separator />
+            <Label text="Deskripsi:" style="-fx-font-weight: bold;" />
+            <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;">
+                <Label fx:id="descriptionLabel" wrapText="true" />
+            </ScrollPane>
+            <Separator />
+            <Label text="Catatan Admin:" style="-fx-font-weight: bold;" />
+            <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;">
+                <Label fx:id="adminNotesLabel" wrapText="true" />
+            </ScrollPane>
+        </VBox>
+
+        <!-- Kolom Kanan: Foto dan Peta -->
+        <VBox HBox.hgrow="ALWAYS" spacing="10.0">
+            <Label text="Foto Laporan" style="-fx-font-weight: bold;" />
+            <ImageView fx:id="photoView" fitHeight="200.0" preserveRatio="true" />
+            <Label text="Lokasi di Peta" style="-fx-font-weight: bold;" />
+            <WebView fx:id="mapWebView" VBox.vgrow="ALWAYS" />
+        </VBox>
+    </children>
+</HBox>

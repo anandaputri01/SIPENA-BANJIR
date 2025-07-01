@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LoginController">
+    <stylesheets>
+        <URL value="@../css/styles.css" />
+    </stylesheets>
+    <children>
+        <VBox alignment="CENTER" spacing="20.0" style="-fx-background-color: linear-gradient(to bottom right, #4a6baf, #3a8bc8);" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <padding>
+                <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+            </padding>
+            <children>
+                <ImageView fitHeight="79.0" fitWidth="147.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../images/flood-icon.png" />
+                    </image>
+                </ImageView>
+                <Label text="Pelaporan Banjir Semarang" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="24.0" />
+                    </font>
+                </Label>
+                <Label text="Silakan login untuk melanjutkan" textFill="WHITE" />
+                <TextField fx:id="usernameField" promptText="Username" styleClass="rounded-textfield" />
+                <PasswordField fx:id="passwordField" promptText="Password" styleClass="rounded-textfield" />
+                <Button fx:id="loginButton" mnemonicParsing="false" onAction="#handleLogin" styleClass="primary-button" text="Login" />
+                <Hyperlink fx:id="registerLink" onAction="#handleRegisterLink" text="Belum punya akun? Daftar disini" textFill="WHITE" />
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

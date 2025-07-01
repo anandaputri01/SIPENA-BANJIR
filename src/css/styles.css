@@ -1,0 +1,338 @@
+/* Base styles */
+.root {
+    -fx-font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+/* Text field styles */
+.rounded-textfield {
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-border-color: #ccc;
+    -fx-padding: 8 15;
+    -fx-font-size: 14px;
+}
+
+.rounded-textarea {
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #ccc;
+    -fx-padding: 8 15;
+    -fx-font-size: 14px;
+    -fx-min-height: 100px;
+}
+
+/* Button styles */
+.primary-button {
+    -fx-background-color: #4a6baf;
+    -fx-text-fill: white;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-padding: 8 20;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+}
+
+.primary-button:hover {
+    -fx-background-color: #3a5a9f;
+}
+
+.secondary-button {
+    -fx-background-color: #f5f5f5;
+    -fx-text-fill: #4a6baf;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-border-color: #4a6baf;
+    -fx-border-width: 1;
+    -fx-padding: 8 20;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+}
+
+.secondary-button:hover {
+    -fx-background-color: #e5e5e5;
+}
+
+/* Header styles */
+.header-label {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+}
+
+/* Report list styles */
+.report-list {
+    -fx-background-color: transparent;
+    -fx-padding: 5px;
+}
+
+.report-list .scroll-bar:vertical {
+    -fx-background-color: transparent;
+}
+
+.report-list .scroll-bar:vertical .thumb {
+    -fx-background-color: #ccc;
+    -fx-background-radius: 5;
+}
+
+.report-list .scroll-bar:vertical .increment-button,
+.report-list .scroll-bar:vertical .decrement-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0 0 0 0;
+}
+
+.report-list .scroll-bar:vertical .increment-arrow,
+.report-list .scroll-bar:vertical .decrement-arrow {
+    -fx-shape: " ";
+    -fx-padding: 0;
+}
+
+/* Report item styles */
+.report-location {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #4a6baf;
+}
+
+.report-description {
+    -fx-font-size: 14px;
+    -fx-text-fill: #555;
+}
+
+.report-meta {
+    -fx-font-size: 12px;
+    -fx-text-fill: #777;
+}
+
+.report-status {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 3 10;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+}
+
+.report-status-pending {
+    -fx-text-fill: #d35400;
+    -fx-background-color: #fdebd0;
+}
+
+.report-status-reviewed {
+    -fx-text-fill: #2980b9;
+    -fx-background-color: #d6eaf8;
+}
+
+.report-status-resolved {
+    -fx-text-fill: #27ae60;
+    -fx-background-color: #d5f5e3;
+}
+
+/* Add these to your existing styles */
+
+/* Map view styling */
+.web-view {
+    -fx-border-color: #ddd;
+    -fx-border-width: 1;
+    -fx-border-radius: 5;
+}
+
+/* Tab pane styling */
+.tab-pane {
+    -fx-tab-min-width: 120px;
+    -fx-tab-max-width: 120px;
+}
+
+.tab-pane .tab {
+    -fx-background-color: #e0e0e0;
+    -fx-background-insets: 0 1 0 1;
+    -fx-background-radius: 5 5 0 0;
+    -fx-padding: 5 15;
+}
+
+.tab-pane .tab:selected {
+    -fx-background-color: #f5f5f5;
+    -fx-border-color: #4a6baf;
+    -fx-border-width: 0 0 3 0;
+}
+
+.tab-pane .tab .tab-label {
+    -fx-text-fill: #333;
+    -fx-font-weight: bold;
+}
+
+.tab-pane .tab:selected .tab-label {
+    -fx-text-fill: #4a6baf;
+}
+/* Add these styles to your existing styles.css file */
+
+/* Button Styles */
+.primary-button {
+    -fx-background-color: #4a6baf;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 8 16 8 16;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-cursor: hand;
+}
+
+.primary-button:hover {
+    -fx-background-color: #3a5a9f;
+}
+
+.secondary-button {
+    -fx-background-color: #6c757d;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 6 12 6 12;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-cursor: hand;
+    -fx-font-size: 11px;
+}
+
+.secondary-button:hover {
+    -fx-background-color: #5a6268;
+}
+
+.danger-button {
+    -fx-background-color: #dc3545;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 6 12 6 12;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-cursor: hand;
+    -fx-font-size: 11px;
+}
+
+.danger-button:hover {
+    -fx-background-color: #c82333;
+}
+
+.danger-button:pressed {
+    -fx-background-color: #bd2130;
+}
+
+/* Report Item Styles */
+.report-location {
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-text-fill: #2c3e50;
+}
+
+.report-description {
+    -fx-font-size: 12px;
+    -fx-text-fill: #34495e;
+    -fx-max-width: 400px;
+}
+
+.report-meta {
+    -fx-font-size: 11px;
+    -fx-text-fill: #7f8c8d;
+}
+
+.report-status {
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-padding: 2 6 2 6;
+    -fx-border-radius: 3;
+    -fx-background-radius: 3;
+}
+
+.report-status-pending {
+    -fx-background-color: #fff3cd;
+    -fx-text-fill: #856404;
+    -fx-border-color: #ffeaa7;
+    -fx-border-width: 1;
+}
+
+.report-status-reviewed {
+    -fx-background-color: #d1ecf1;
+    -fx-text-fill: #0c5460;
+    -fx-border-color: #bee5eb;
+    -fx-border-width: 1;
+}
+
+.report-status-resolved {
+    -fx-background-color: #d4edda;
+    -fx-text-fill: #155724;
+    -fx-border-color: #c3e6cb;
+    -fx-border-width: 1;
+}
+
+.report-status-unknown {
+    -fx-background-color: #f8f9fa;
+    -fx-text-fill: #6c757d;
+    -fx-border-color: #dee2e6;
+    -fx-border-width: 1;
+}
+
+/* List Styles */
+.report-list {
+    -fx-background-color: white;
+    -fx-border-color: #ddd;
+    -fx-border-width: 1;
+    -fx-border-radius: 5;
+}
+
+.report-list .list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 5 10 5 10;
+}
+
+.report-list .list-cell:selected {
+    -fx-background-color: #e3f2fd;
+}
+
+.report-list .list-cell:hover {
+    -fx-background-color: #f5f5f5;
+}
+
+/* Header Styles */
+.header-label {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.section-label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #34495e;
+}
+
+.help-text {
+    -fx-font-size: 10px;
+    -fx-text-fill: #95a5a6;
+}
+
+/* Form Styles */
+.text-field {
+    -fx-padding: 8 12 8 12;
+    -fx-border-color: #ddd;
+    -fx-border-width: 1;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+}
+
+.text-field:focused {
+    -fx-border-color: #4a6baf;
+    -fx-border-width: 2;
+}
+
+.text-area {
+    -fx-padding: 8 12 8 12;
+    -fx-border-color: #ddd;
+    -fx-border-width: 1;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+}
+
+.text-area:focused {
+    -fx-border-color: #4a6baf;
+    -fx-border-width: 2;
+}
+
+.text-area .content {
+    -fx-background-color: white;
+}
